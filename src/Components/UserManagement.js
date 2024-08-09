@@ -12,7 +12,7 @@ const UserManagement = () => {
 
   const handleSignIn = async () => {
     try {
-      const response = await axios.post('http://127.0.0.1:5000/login', { 
+      const response = await axios.post('https://haas-maven-backend-d0f245db3484.herokuapp.com/login', { 
         user_id: userId,
         password: password,
       });
@@ -35,7 +35,7 @@ const UserManagement = () => {
   const handleNewUser = async () => {
     try {
       // Make a POST request to the backend to create a new user
-      const response = await axios.post('http://127.0.0.1:5000/add_user', { 
+      const response = await axios.post('https://haas-maven-backend-d0f245db3484.herokuapp.com/add_user', { 
         user_id: userId,
         password: password,
       });

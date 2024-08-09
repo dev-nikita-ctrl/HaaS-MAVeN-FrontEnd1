@@ -21,7 +21,7 @@ const ProjectManagement = () => {
   const handleCreateProject = async () => {
     try {
       // Make a POST request to create a new project
-      const response = await axios.post('http://127.0.0.1:5000/create_project', { 
+      const response = await axios.post('https://haas-maven-backend-d0f245db3484.herokuapp.com/create_project', { 
         project_name: projectName,
         description: description,
         project_id: projectId
@@ -54,7 +54,7 @@ const ProjectManagement = () => {
       localStorage.setItem('project_id', existingProjectId);
 
       // Make a POST request to join the existing project
-      const response = await axios.post(`http://127.0.0.1:5000/join_project`, {
+      const response = await axios.post(`https://haas-maven-backend-d0f245db3484.herokuapp.com/join_project`, {
         project_id: existingProjectId,
         user_id: userId
       }); 

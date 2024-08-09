@@ -21,17 +21,17 @@ const ResourceManagement = () => {
     // Fetch hardware names and project info
     const fetchHardwareAndProjectInfo = async () => {
       try {
-        const hardwareResponse = await axios.get('http://127.0.0.1:5000/get_all_hw_names');
+        const hardwareResponse = await axios.get('https://haas-maven-backend-d0f245db3484.herokuapp.com/get_all_hw_names');
         if (hardwareResponse.data.status === 'success') {
           const hardwareNames = hardwareResponse.data.hardware_names;
 
           // Fetch information for each hardware name
           const hardwareInfoPromises = hardwareNames.map(hwName =>
-            axios.get(`http://127.0.0.1:5000/get_hw_info?hw_name=${hwName}`)
+            axios.get(`https://haas-maven-backend-d0f245db3484.herokuapp.com/get_hw_info?hw_name=${hwName}`)
           );
 
           // Fetch project info
-          const projectResponse = await axios.get(`http://127.0.0.1:5000/get_project_info?project_id=${projectId}`);
+          const projectResponse = await axios.get(`https://haas-maven-backend-d0f245db3484.herokuapp.com/get_project_info?project_id=${projectId}`);
           const hardwareData = projectResponse.data.project.hardware || {};
 
           const hardwareInfoResponses = await Promise.all(hardwareInfoPromises);
@@ -61,7 +61,7 @@ const ResourceManagement = () => {
     };
 
     fetchHardwareAndProjectInfo();
-  }, []);
+  }, [projectId]);
 
   const handleCheckIn = async () => {
     try {
@@ -79,13 +79,13 @@ const ResourceManagement = () => {
           console.log("check-in payload", payload);
   
           try {
-            const response = await axios.post('http://127.0.0.1:5000/check_in', payload);
+            const response = await axios.post('https://haas-maven-backend-d0f245db3484.herokuapp.com/check_in', payload);
             console.log("response", response);
             if (response.data.status === 'success') {
               console.log('Check-in successful for', resource.name, ':', response.data);
   
               // Fetch updated project info
-              const projectResponse = await axios.get(`http://127.0.0.1:5000/get_project_info?project_id=${projectId}`);
+              const projectResponse = await axios.get(`https://haas-maven-backend-d0f245db3484.herokuapp.com/get_project_info?project_id=${projectId}`);
               const updatedHardwareData = projectResponse.data.project.hardware || {};
   
               console.log("Updated hardware data after check-in", updatedHardwareData);
@@ -152,12 +152,12 @@ const ResourceManagement = () => {
           console.log("check-out payload", payload);
   
           try {
-            const response = await axios.post('http://127.0.0.1:5000/check_out', payload);
+            const response = await axios.post('https://haas-maven-backend-d0f245db3484.herokuapp.com/check_out', payload);
             if (response.data.status === 'success') {
               console.log('Check-out successful for', resource.name, ':', response.data);
 
               // Fetch updated project info
-              const projectResponse = await axios.get(`http://127.0.0.1:5000/get_project_info?project_id=${projectId}`);
+              const projectResponse = await axios.get(`https://haas-maven-backend-d0f245db3484.herokuapp.com/get_project_info?project_id=${projectId}`);
               const updatedHardwareData = projectResponse.data.project.hardware || {};
   
               console.log("Updated hardware data after checkout", updatedHardwareData);
