@@ -48,7 +48,7 @@ const UserLogin = () => {
     } catch (error) {
       console.error('An error occurred during sign-in:', error);
       // Show error message in popup
-      setPopupMessage(`An error occurred during sign-in: ${error.message}`);
+      setPopupMessage(`An error occurred during sign-in: ${error.response.data.error}`);
       setShowPopup(true);
     }
   };
@@ -57,6 +57,8 @@ const UserLogin = () => {
     setShowPopup(false); // Close the popup
     setPopupMessage(''); // Clear the popup message
   };
+
+  const isSignInDisabled = !userId || !password
 
   return (
     <div className="user-management">
@@ -79,7 +81,7 @@ const UserLogin = () => {
         <label>Password</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
-      <button onClick={handleSignIn}>Sign in</button>
+      <button disabled={isSignInDisabled} onClick={handleSignIn}>Sign in</button>
     </div>
   );
 };

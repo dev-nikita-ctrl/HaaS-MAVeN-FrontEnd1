@@ -50,10 +50,12 @@ const UserRegister = () => {
     } catch (error) {
       console.error('An error occurred during user creation:', error);
       // Show error message in popup
-      setPopupMessage(`An error occurred during user creation: ${error.message}`);
+      setPopupMessage(`An error occurred during user creation: ${error.response.data.message}`);
       setShowPopup(true);
     }
   };
+
+  const isRegisterDisabled = !userId || !password
 
   const closePopup = () => {
     setShowPopup(false); // Close the popup
@@ -81,7 +83,7 @@ const UserRegister = () => {
         <label>Password</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </div>
-      <button class="register" onClick={handleNewUser}>Register</button>
+      <button disabled={isRegisterDisabled} class="register" onClick={handleNewUser}>Register</button>
     </div>
   );
 };
