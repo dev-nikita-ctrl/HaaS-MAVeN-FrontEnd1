@@ -17,6 +17,13 @@ const ProjectManagement = () => {
     localStorage.clear()
   };
 
+  // Handle alphanumeric input for Project ID
+  const handleProjectIdChange = (e) => {
+    const value = e.target.value;
+    // Remove non-alphanumeric characters
+    const filteredValue = value.replace(/[^a-zA-Z0-9]/g, '');
+    setProjectId(filteredValue);
+  };
 
   const handleCreateProject = async () => {
     try {
@@ -30,6 +37,10 @@ const ProjectManagement = () => {
       if (response.data.status === 'success') {
         // Show a success message in the popup
         setPopupMessage('Project created successfully!');
+        // Clear the input fields after successful creation
+        setProjectName('');
+        setDescription('');
+        setProjectId('');
       } else {
         // Show an error message in the popup
         setPopupMessage(`Project creation failed: ${response.data.message || 'Unknown error'}`);
@@ -46,6 +57,14 @@ const ProjectManagement = () => {
   const closePopup = () => {
     setShowPopup(false); // Close the popup
     setPopupMessage(''); // Clear the popup message
+  };
+
+  // Handle alphanumeric input for Existing Project ID
+  const handleExistingProjectIdChange = (e) => {
+    const value = e.target.value;
+    // Remove non-alphanumeric characters
+    const filteredValue = value.replace(/[^a-zA-Z0-9]/g, '');
+    setExistingProjectId(filteredValue);
   };
 
   const handleUseExistingProject = async () => {
@@ -76,11 +95,15 @@ const ProjectManagement = () => {
         setShowPopup(true);
       }
     } catch (error) {
+      console.log("eror", error)
       // Handle network errors or other issues and show an error message in the popup
-      setPopupMessage(`An error occurred while fetching the existing project: ${error.message}`);
+      setPopupMessage(`An error occurred while fetching the existing project: ${error.response.data.message}`);
       setShowPopup(true);
     }
   };
+
+  const isCreateProjectDisabled = !projectName || !description || !projectId;
+  const isExistingProjectDisabled = !existingProjectId
 
   return (
     <>
@@ -103,10 +126,10 @@ const ProjectManagement = () => {
       </div>
       
       <div>
-      <button onClick={handleCreateProject}>Create New Project</button>
+      <button disabled={isCreateProjectDisabled} onClick={handleCreateProject}>Create New Project</button>
       <div>
         <label>Project ID</label>
-        <input type="text" value={projectId} onChange={(e) => setProjectId(e.target.value)} />
+        <input type="text" value={projectId} onChange={handleProjectIdChange} />
       </div>
       <div>
         <label>Project Name</label>
@@ -118,10 +141,10 @@ const ProjectManagement = () => {
       </div>
       </div>
       
-      <button onClick={handleUseExistingProject}>Use Existing Project</button>
+      <button disabled={isExistingProjectDisabled} onClick={handleUseExistingProject}>Use Existing Project</button>
       <div>
         <label>Existing Project ID</label>
-        <input type="text" value={existingProjectId} onChange={(e) => setExistingProjectId(e.target.value)} />
+        <input type="text" value={existingProjectId} onChange={handleExistingProjectIdChange} />
       </div>
     </div>
     </>

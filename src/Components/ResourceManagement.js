@@ -121,7 +121,7 @@ const ResourceManagement = () => {
           } catch (error) {
             console.error('An error occurred during check-in for', resource.name, ':', error);
             // Show error message in popup
-            setPopupMessage(`An error occurred during check-in for ${resource.name}: ${error.message}`);
+            setPopupMessage(`An error occurred during check-in for ${resource.name}: ${error.response.data.message}`);
             setShowPopup(true);
           }
         }
@@ -129,7 +129,7 @@ const ResourceManagement = () => {
     } catch (error) {
       console.error('An error occurred during check-in:', error);
       // Show error message in popup
-      setPopupMessage(`An error occurred during check-in: ${error.message}`);
+      setPopupMessage(`An error occurred during check-in: ${error.response.data.message}`);
       setShowPopup(true);
     }
   };
@@ -193,7 +193,7 @@ const ResourceManagement = () => {
           } catch (error) {
             console.error('An error occurred during check-out for', resource.name, ':', error);
             // Show error message in popup
-            setPopupMessage(`An error occurred during check-out for ${resource.name}: ${error.message}`);
+            setPopupMessage(`An error occurred during check-out for ${resource.name}: ${error.response.data.message}`);
             setShowPopup(true);
           }
         }
@@ -201,7 +201,7 @@ const ResourceManagement = () => {
     } catch (error) {
       console.error('An error occurred during check-out:', error);
       // Show error message in popup
-      setPopupMessage(`An error occurred during check-out: ${error.message}`);
+      setPopupMessage(`An error occurred during check-out: ${error.response.data.message}`);
       setShowPopup(true);
     }
   };
@@ -210,6 +210,9 @@ const ResourceManagement = () => {
     setShowPopup(false); // Close the popup
     setPopupMessage(''); // Clear the popup message
   };
+
+  // Check if any resource has a non-empty, non-zero request
+  const isCheckInCheckOutDisabled = resources.every(resource => !resource.request || parseInt(resource.request) === 0);
   
 
   if (loading) {
@@ -222,7 +225,7 @@ const ResourceManagement = () => {
     <button class="btn" onClick={onLogOut}> Log Out</button> 
     </div>
     <div className="resource-management">
-      <h2>Resource Management</h2>
+      <h2>Resource Management for Project ID: {projectId}</h2>
       {/* Popup message */}
       {showPopup && (
         <div className="popup">
@@ -273,8 +276,8 @@ const ResourceManagement = () => {
         </tbody>
       </table>
       <div className="actions">
-        <button onClick={handleCheckIn}>Check-in</button>
-        <button onClick={handleCheckOut}>Check-out</button>
+        <button disabled={isCheckInCheckOutDisabled} onClick={handleCheckIn}>Check-in</button>
+        <button disabled={isCheckInCheckOutDisabled} onClick={handleCheckOut}>Check-out</button>
       </div>
     </div>
     </>
