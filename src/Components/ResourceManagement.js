@@ -250,7 +250,7 @@ const handleCheckOut = async () => {
   return (
     <>
     <div class="container">
-    <button class="btn" onClick={onLogOut}> Log Out</button> 
+    <button class="btn" onClick={onLogOut}>Log Out</button> 
     </div>
     <div className="resource-management">
       <h2>Resource Management for Project ID: {projectId}</h2>
